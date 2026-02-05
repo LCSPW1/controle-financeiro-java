@@ -4,6 +4,8 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author luis_
@@ -26,6 +28,7 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         txtTransactionType = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -36,8 +39,8 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
         txtDescription = new javax.swing.JTextField();
         btnBack = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
-        chkOutflow = new javax.swing.JRadioButton();
-        chkInflow = new javax.swing.JRadioButton();
+        rbOutflow = new javax.swing.JRadioButton();
+        rbInflow = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,13 +60,20 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
         });
 
         btnSave.setText("CADASTRAR");
-
-        chkOutflow.setText("SAÍDA");
-
-        chkInflow.setText("ENTRADA");
-        chkInflow.addActionListener(new java.awt.event.ActionListener() {
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkInflowActionPerformed(evt);
+                btnSaveActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(rbOutflow);
+        rbOutflow.setText("SAÍDA");
+
+        buttonGroup1.add(rbInflow);
+        rbInflow.setText("ENTRADA");
+        rbInflow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbInflowActionPerformed(evt);
             }
         });
 
@@ -72,7 +82,7 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(111, Short.MAX_VALUE)
+                .addContainerGap(112, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
@@ -83,9 +93,9 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
                     .addComponent(txtTransactionType, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(chkInflow)
+                            .addComponent(rbInflow)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(chkOutflow))
+                            .addComponent(rbOutflow))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -112,10 +122,10 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkInflow)
-                    .addComponent(chkOutflow))
+                    .addComponent(rbInflow)
+                    .addComponent(rbOutflow))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBack)
@@ -128,11 +138,18 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
-    private void chkInflowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkInflowActionPerformed
+    private void rbInflowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbInflowActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_chkInflowActionPerformed
+    }//GEN-LAST:event_rbInflowActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Transação cadastrada com sucesso!");
+        this.dispose();
+    }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,12 +192,13 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnSave;
-    private javax.swing.JRadioButton chkInflow;
-    private javax.swing.JRadioButton chkOutflow;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JRadioButton rbInflow;
+    private javax.swing.JRadioButton rbOutflow;
     private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtDescription;
     private javax.swing.JTextField txtTransactionType;

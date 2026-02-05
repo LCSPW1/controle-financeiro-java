@@ -4,6 +4,7 @@
  */
 package controlefinanceiro;
 
+import view.*;
 import model.*;
 import java.time.LocalDate;
 
@@ -18,22 +19,7 @@ public class ControleFinanceiro {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Usuario usuario = new Usuario("Luis", "luis@email.com", "123456");
-        Categoria categoria = new Categoria("Alimentação");
-
-        Movimentacao mov = new Movimentacao(
-                LocalDate.now(),
-                50.00,
-                0,
-                "Almoço"
-        );
-
-        mov.setUsuario(usuario);
-        mov.setCategoria(categoria);
-
-        System.out.println("Usuário: " + usuario.getNome());
-        System.out.println("Categoria: " + categoria.getNome());
-        System.out.println("Valor: R$ " + mov.getValor());
-        System.out.println("Tipo: " + (mov.getTipo() == 1 ? "Entrada" : "Saída"));
+        telaLogin login = new telaLogin();
+        login.setVisible(true);
     }    
 }

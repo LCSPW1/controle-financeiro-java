@@ -99,10 +99,14 @@ public class telaLogin extends javax.swing.JFrame {
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
+        new telaCadastroUsuario().setVisible(true);
+
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
+        new telaPrincipal().setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
