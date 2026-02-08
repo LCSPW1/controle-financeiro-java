@@ -4,6 +4,11 @@
  */
 package view;
 
+
+import dao.UsuarioDAO;
+import javax.swing.JOptionPane;
+import view.telaPrincipal;
+
 /**
  *
  * @author luis_
@@ -105,8 +110,32 @@ public class telaLogin extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        new telaPrincipal().setVisible(true);
-        dispose();
+        String email = txtEmail.getText();
+        String senha = new String(txtPassword.getPassword());
+
+        if (email.isEmpty() || senha.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha email e senha");
+            return;
+        }
+
+        UsuarioDAO dao = new UsuarioDAO();
+
+        try {
+            boolean logado = dao.login(email, senha);
+
+            if (logado) {
+                JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
+                telaPrincipal principal = new telaPrincipal();
+                principal.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Email ou senha inválidos");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao realizar login");
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
