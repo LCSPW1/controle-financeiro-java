@@ -7,6 +7,11 @@ package controlefinanceiro;
 import view.*;
 import model.*;
 import java.time.LocalDate;
+import util.ConexaoDB;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import util.TesteConexao;
 
 /**
  *
@@ -19,7 +24,11 @@ public class ControleFinanceiro {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        telaLogin login = new telaLogin();
-        login.setVisible(true);
+        if (TesteConexao.testar()) {
+            telaLogin login = new telaLogin();
+            login.setVisible(true);
+        } else {
+            System.exit(0);
+        }
     }    
 }
