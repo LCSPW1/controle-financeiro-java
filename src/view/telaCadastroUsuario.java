@@ -5,6 +5,9 @@
 package view;
 
 import javax.swing.JOptionPane;
+import dao.UsuarioDAO;
+import model.Usuario;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,8 +34,8 @@ public class telaCadastroUsuario extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnRegisterUser = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
         txtName = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
@@ -45,17 +48,17 @@ public class telaCadastroUsuario extends javax.swing.JFrame {
 
         jLabel3.setText("Senha");
 
-        jButton1.setText("SALVAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnRegisterUser.setText("SALVAR");
+        btnRegisterUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnRegisterUserActionPerformed(evt);
             }
         });
 
-        jButton2.setText("VOLTAR");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnBack.setText("VOLTAR");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnBackActionPerformed(evt);
             }
         });
 
@@ -68,9 +71,9 @@ public class telaCadastroUsuario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButton2)
+                            .addComponent(btnBack)
                             .addGap(41, 41, 41)
-                            .addComponent(jButton1))
+                            .addComponent(btnRegisterUser))
                         .addComponent(jLabel3)
                         .addComponent(jLabel1)
                         .addComponent(txtName)
@@ -98,24 +101,42 @@ public class telaCadastroUsuario extends javax.swing.JFrame {
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
+                    .addComponent(btnBack)
+                    .addComponent(btnRegisterUser))
                 .addGap(21, 21, 21))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnRegisterUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterUserActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
-        this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+        
+        String nome = txtName.getText();
+        String email = txtEmail.getText();
+        String senha = new String(txtPassword.getPassword());
+        
+        if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+            return;
+        }
+        
+        Usuario usuario = new Usuario(nome, email, senha);
+        UsuarioDAO dao = new UsuarioDAO();
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            dao.cadastrar(usuario);
+            JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
+            this.dispose(); 
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao cadastrar usuário");
+        }
+    }//GEN-LAST:event_btnRegisterUserActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:,
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -153,8 +174,8 @@ public class telaCadastroUsuario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnRegisterUser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
