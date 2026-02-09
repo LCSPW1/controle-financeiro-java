@@ -4,6 +4,13 @@
  */
 package view;
 
+import dao.MovimentacaoDAO;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Movimentacao;
+import model.Usuario;
+
 /**
  *
  * @author luis_
@@ -13,8 +20,12 @@ public class telaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form telaPrincipal
      */
-    public telaPrincipal() {
+    private Usuario usuarioLogado;
+
+    public telaPrincipal(Usuario usuarioLogado) {
         initComponents();
+        this.usuarioLogado = usuarioLogado;
+        atualizarTabelas();
     }
 
     /**
@@ -42,6 +53,13 @@ public class telaPrincipal extends javax.swing.JFrame {
         btnAddTransaction = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         jLabel1.setText("Olá,");
 
@@ -170,8 +188,15 @@ public class telaPrincipal extends javax.swing.JFrame {
 
     private void btnAddTransactionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddTransactionActionPerformed
         // TODO add your handling code here:
-        new telaCadastroTransacoes().setVisible(true);
+        telaCadastroTransacoes tela = new telaCadastroTransacoes(usuarioLogado);
+
+        tela.setVisible(true);
     }//GEN-LAST:event_btnAddTransactionActionPerformed
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        // TODO add your handling code here:
+        atualizarTabelas();
+    }//GEN-LAST:event_formWindowGainedFocus
 
     /**
      * @param args the command line arguments
@@ -203,10 +228,53 @@ public class telaPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new telaPrincipal().setVisible(true);
+                
             }
         });
     }
+    
+public void atualizarTabelas() {
+    MovimentacaoDAO dao = new MovimentacaoDAO();
+    
+    DefaultTableModel modeloE = (DefaultTableModel) tableInflow.getModel();
+    DefaultTableModel modeloS = (DefaultTableModel) tableOutflow.getModel();
+    
+    modeloE.setNumRows(0);
+    modeloS.setNumRows(0);
+
+    // Variáveis para armazenar as somas
+    double totalEntradas = 0;
+    double totalSaidas = 0;
+
+    // 1. Busca e soma ENTRADAS (Tipo 1)
+    List<Movimentacao> entradas = dao.listarPorTipo(1); 
+    for (Movimentacao m : entradas) {
+        totalEntradas += m.getValor(); // Soma o valor ao total
+        modeloE.addRow(new Object[]{m.getData(), m.getDescricao(), m.getNomeCategoria(), m.getValor()});
+    }
+
+    // 2. Busca e soma SAÍDAS (Tipo 0)
+    List<Movimentacao> saidas = dao.listarPorTipo(0); 
+    for (Movimentacao s : saidas) {
+        totalSaidas += s.getValor(); // Soma o valor ao total
+        modeloS.addRow(new Object[]{s.getData(), s.getDescricao(), s.getNomeCategoria(), s.getValor()});
+    }
+
+    // 3. Atualiza os Labels na tela principal
+    // Use os nomes das variáveis que aparecem no seu Navigator (imagem fd083a)
+    txtInflow.setText(String.format("%.2f", totalEntradas));
+    tstOutflow.setText(String.format("%.2f", totalSaidas));
+    
+    double saldo = totalEntradas - totalSaidas;
+    txtAccountBalance.setText(String.format("%.2f", saldo));
+    
+    // Opcional: Mudar a cor do saldo se for negativo
+    if (saldo < 0) {
+        txtAccountBalance.setForeground(java.awt.Color.RED);
+    } else {
+        txtAccountBalance.setForeground(new java.awt.Color(0, 153, 0)); // Verde
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddTransaction;

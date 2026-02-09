@@ -11,13 +11,14 @@ import java.time.LocalDate;
  * @author luis_
  */
 public class Movimentacao {
-    private int idMovimentacao;
+    private int id;
     private LocalDate data;
     private double valor;
     private int tipo; // 0 saída | 1 entrada
     private String descricao;
-    private Usuario usuario;
-    private Categoria categoria;
+    private int idUsuario;
+    private int idCategoria;
+    private String categoriaNome;
     
     public Movimentacao() {
     }
@@ -61,21 +62,22 @@ public class Movimentacao {
         this.descricao = descricao;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public int getIdCategoria() {
+        return idCategoria;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
     }
     
-
+    public String getNomeCategoria() { return categoriaNome; }
+    public void setNomeCategoria(String categoriaNome) { this.categoriaNome = categoriaNome; }
 }

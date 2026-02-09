@@ -5,12 +5,6 @@
 package controlefinanceiro;
 
 import view.*;
-import model.*;
-import java.time.LocalDate;
-import util.ConexaoDB;
-import java.sql.Connection;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
 import util.TesteConexao;
 
 /**

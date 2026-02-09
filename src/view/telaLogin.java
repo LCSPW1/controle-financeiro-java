@@ -8,6 +8,7 @@ package view;
 import dao.UsuarioDAO;
 import javax.swing.JOptionPane;
 import view.telaPrincipal;
+import model.Usuario;
 
 /**
  *
@@ -110,8 +111,8 @@ public class telaLogin extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        String email = txtEmail.getText();
-        String senha = new String(txtPassword.getPassword());
+        String email = txtEmail.getText().trim();
+        String senha = new String(txtPassword.getPassword()).trim();
 
         if (email.isEmpty() || senha.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Preencha email e senha");
@@ -121,11 +122,14 @@ public class telaLogin extends javax.swing.JFrame {
         UsuarioDAO dao = new UsuarioDAO();
 
         try {
-            boolean logado = dao.login(email, senha);
+            Usuario usuarioLogado = dao.login(email, senha);
 
-            if (logado) {
+            if (usuarioLogado != null) {
                 JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
-                telaPrincipal principal = new telaPrincipal();
+
+                telaPrincipal principal =
+                        new telaPrincipal(usuarioLogado);
+
                 principal.setVisible(true);
                 this.dispose();
             } else {

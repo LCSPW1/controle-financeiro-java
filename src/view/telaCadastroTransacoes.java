@@ -5,6 +5,16 @@
 package view;
 
 import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import model.Movimentacao;
+import dao.*;
+import util.ConexaoDB;
+import java.time.LocalDate;
+import model.Categoria;
+import model.Usuario;
 
 /**
  *
@@ -15,8 +25,25 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
     /**
      * Creates new form telaLogin
      */
-    public telaCadastroTransacoes() {
+    private Usuario usuarioLogado;
+
+    public telaCadastroTransacoes(Usuario usuarioLogado) {
         initComponents();
+        this.usuarioLogado = usuarioLogado;
+        popularComboCategorias();
+    }
+    
+    private void popularComboCategorias() {
+        CategoriaDAO dao = new CategoriaDAO();
+        java.util.List<Categoria> categorias = dao.listarCategorias();
+
+        jComboBox1.removeAllItems();
+
+    jComboBox1.addItem((Object) new Categoria(0, "Selecione..."));
+
+    for (Categoria c : categorias) {
+        jComboBox1.addItem((Object) c); 
+    }
     }
 
     /**
@@ -29,8 +56,6 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
-        txtTransactionType = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtValue = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -41,10 +66,10 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
         btnSave = new javax.swing.JButton();
         rbOutflow = new javax.swing.JRadioButton();
         rbInflow = new javax.swing.JRadioButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("Tipo de transação");
 
         jLabel2.setText("Valor");
 
@@ -71,46 +96,41 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
 
         buttonGroup1.add(rbInflow);
         rbInflow.setText("ENTRADA");
-        rbInflow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbInflowActionPerformed(evt);
-            }
-        });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel5.setText("Comentário");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(112, Short.MAX_VALUE)
+                .addContainerGap(111, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtValue, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtTransactionType, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
+                    .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel3)
+                        .addComponent(txtDate, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtValue, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                             .addComponent(rbInflow)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(rbOutflow))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(btnBack, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnSave))
-                        .addComponent(txtDescription, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(97, 97, 97))
+                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(98, 98, 98))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtTransactionType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(54, 54, 54)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -120,9 +140,13 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
                 .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rbInflow)
                     .addComponent(rbOutflow))
@@ -130,7 +154,7 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBack)
                     .addComponent(btnSave))
-                .addContainerGap())
+                .addGap(39, 39, 39))
         );
 
         pack();
@@ -141,14 +165,63 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
 
-    private void rbInflowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbInflowActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbInflowActionPerformed
-
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Transação cadastrada com sucesso!");
-        this.dispose();
+        try {
+            double valor = Double.parseDouble(txtValue.getText().trim());
+            String descricao = txtDescription.getText().trim();
+
+            if (descricao.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Informe a descrição!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            if (!rbInflow.isSelected() && !rbOutflow.isSelected()) {
+                JOptionPane.showMessageDialog(this, "Selecione Entrada ou Saída!", "Aviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            Object itemSelecionado = jComboBox1.getSelectedItem();
+            
+            if (itemSelecionado == null || !(itemSelecionado instanceof Categoria)) {
+                JOptionPane.showMessageDialog(this, "Selecione uma categoria válida!");
+                return;
+            }
+
+            Categoria cat = (Categoria) itemSelecionado;
+
+            if (cat.getId() == 0) {
+                JOptionPane.showMessageDialog(this, "Por favor, selecione uma categoria!");
+                return;
+            }
+
+            Movimentacao m = new Movimentacao();
+            m.setValor(valor);
+            m.setDescricao(descricao);
+            m.setData(LocalDate.now());
+            m.setIdUsuario(usuarioLogado.getId());
+            m.setIdCategoria(cat.getId());
+
+            MovimentacaoDAO dao = new MovimentacaoDAO();
+
+            if (rbInflow.isSelected()) {
+                dao.inserirEntrada(m);
+            } else {
+                dao.inserirSaida(m);
+            }
+
+            JOptionPane.showMessageDialog(this, "Movimentação cadastrada com sucesso!");
+
+            txtValue.setText("");
+            txtDescription.setText("");
+            buttonGroup1.clearSelection();
+            jComboBox1.setSelectedIndex(0);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Informe um valor numérico válido!", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao salvar no banco: " + e.getMessage(), "Erro de Sistema", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
@@ -184,7 +257,7 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new telaCadastroTransacoes().setVisible(true);
+
             }
         });
     }
@@ -193,15 +266,15 @@ public class telaCadastroTransacoes extends javax.swing.JFrame {
     private javax.swing.JButton btnBack;
     private javax.swing.JButton btnSave;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JComboBox<Object> jComboBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JRadioButton rbInflow;
     private javax.swing.JRadioButton rbOutflow;
     private javax.swing.JTextField txtDate;
     private javax.swing.JTextField txtDescription;
-    private javax.swing.JTextField txtTransactionType;
     private javax.swing.JTextField txtValue;
     // End of variables declaration//GEN-END:variables
 }

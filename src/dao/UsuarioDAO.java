@@ -15,22 +15,30 @@ import java.sql.ResultSet;
  * @author luis_
  */
 public class UsuarioDAO {
-    public boolean login(String email, String senha) {
+    public Usuario login(String email, String senha) throws Exception {
+
         String sql = "SELECT * FROM usuario WHERE email = ? AND senha = ?";
-        
-        try (Connection conn = ConexaoDB.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, email);
-            ps.setString(2, senha);
-            
-            ResultSet rs = ps.executeQuery();
-            
-            return rs.next();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+
+        Connection conn = ConexaoDB.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setString(1, email);
+        ps.setString(2, senha);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            Usuario u = new Usuario();
+            u.setId(rs.getInt("id_usuario"));
+            u.setNome(rs.getString("nome"));
+            u.setEmail(rs.getString("email"));
+            u.setSenha(rs.getString("senha"));
+            return u;
+        }
+
+        return null;
     }
-    
+
     public void cadastrar(Usuario u) {
         
         System.out.println("ENTROU NO MÉTODO CADASTRAR"); // APENAS PARA TESTE

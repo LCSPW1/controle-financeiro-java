@@ -112,24 +112,35 @@ public class telaCadastroUsuario extends javax.swing.JFrame {
     private void btnRegisterUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterUserActionPerformed
         // TODO add your handling code here:
         
-        String nome = txtName.getText();
-        String email = txtEmail.getText();
+        String nome = txtName.getText().trim();
+        String email = txtEmail.getText().trim();
         String senha = new String(txtPassword.getPassword());
         
         if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Preencha todos os campos");
+            JOptionPane.showMessageDialog(this,
+                    "Preencha todos os campos!",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        Usuario usuario = new Usuario(nome, email, senha);
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(nome);
+        usuario.setEmail(email);
+        usuario.setSenha(senha);
+
         UsuarioDAO dao = new UsuarioDAO();
 
         try {
             dao.cadastrar(usuario);
-            JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
-            this.dispose(); 
+            JOptionPane.showMessageDialog(this,
+                    "Usuário cadastrado com sucesso!");
+            this.dispose();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao cadastrar usuário");
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao cadastrar usuário: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnRegisterUserActionPerformed
 
